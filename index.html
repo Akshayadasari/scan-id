@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan License</title>
+</head>
+<body>
+    <h2>Scan Your License</h2>
+    <input type="file" accept="image/*" capture="environment" id="cameraInput">
+    <button onclick="uploadImage()">Upload</button>
+
+    <script>
+        function uploadImage() {
+            const input = document.getElementById('cameraInput');
+            if (input.files.length === 0) {
+                alert("Please capture an image first.");
+                return;
+            }
+
+            const file = input.files[0];
+            const formData = new FormData();
+            formData.append("image", file);
+
+            fetch("https://your-backend.com/upload", { // Replace with your backend URL
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert("License ID: " + data.license_id);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                alert("Failed to extract license ID.");
+            });
+        }
+    </script>
+</body>
+</html>
+
